@@ -3,10 +3,16 @@ const inquirer = require('inquirer');
 const connection = require('./db/server');
 const gradient = require('gradient-string');
 
-const questions = [
-    
-    {
-      type: 'list',
+
+connection.connect(function (err) {
+    init();
+    if (err) {console.log(err)
+}});
+
+  // TODO: Create a function to initialize app
+  function init() {
+    inquirer.prompt({
+        type: 'list',
       name: 'options',
       message: 'Please choose an option...',
       choices: [
@@ -15,47 +21,37 @@ const questions = [
         'View All employees',
         'Add Department',
         'Add Role',
-        'Add Employee',
-        'Update Employee Role',
+        'Add New Employee',
+        'Update An Existing Employee Role'
       ]
-    },
-   
-  
-  ];
-  
-  // TODO: Create a function to initialize app
-  function init() {
-    inquirer.prompt(questions) 
+    })
       .then((data) => {
-        // Declare a variable for user choice
-        const choice  = data.choices;
-        console.log(data)
         // IF statement to figure out what user chose
-        .then((data) => {
-          if (choice === 'View all departments') {
+          if (data.options === 'View All departments') {
+            console.log("View Departments line 35");
               viewDepartments();
-          } else if (choice === 'View all roles') {
+          } else if (data.options === 'View All roles') {
               viewRoles();
-          } else if (choice === 'View all employees') {
+          } else if (data.options === 'View All employees') {
               viewEmployees();
-          } else if (choice === 'Add department') {
+          } else if (data.options === 'Add Department') {
               addDepartment();
-          } else if (choice === 'Add role') {
+          } else if (data.options === 'Add Role') {
               addRole();
-          } else if (choice === 'Add new employee') {
+          } else if (data.options === 'Add New employee') {
               addEmployee();
-          } else if (choice === 'Update an existing employee role') {
+          } else if (data.options === 'Update An Existing Employee Role') {
               updateRole();
           } 
       })
+    };
   
-  // Function call to initialize app
-  init();
   
   //   Function to view department
 function viewDepartments() {
-  connection.query('SELECT * FROM department', function (err, results) {
-    console.log(results);
+    console.log("View Departments");
+  connection.query('SELECT * FROM department', function (err, result) {
+    console.log(result);
     if (err) { console.log(err) }
     console.table(result)
     init();
@@ -69,7 +65,7 @@ function viewEmployees() {
       function (err, result) {
           if (err) { console.log(err) }
           console.table(result)
-          sinit();
+          init();
       })
   };
 
@@ -210,9 +206,5 @@ function addRole() {
                 init();
             })
         })
-};
-
-
-
-
-
+    };
+      
