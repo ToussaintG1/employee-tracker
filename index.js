@@ -38,7 +38,7 @@ connection.connect(function (err) {
               addDepartment();
           } else if (data.options === 'Add Role') {
               addRole();
-          } else if (data.options === 'Add New employee') {
+          } else if (data.options === 'Add New Employee') {
               addEmployee();
           } else if (data.options === 'Update An Existing Employee Role') {
               updateRole();
